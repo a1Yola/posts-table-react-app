@@ -1,0 +1,57 @@
+import { postsApi } from "@/api";
+import { useInfiniteScroll } from "@/lib";
+import { Loader } from "@components/ui";
+import { PostsToolbar, TableBody, TableHead } from "./ui";
+
+import type { Post } from "@/shared";
+
+export const PostsTable = () => {
+  const { inViewRef, listApi, nextPage } = useInfiniteScroll<Post>({
+    loadList: postsApi.loadPosts,
+    intersectionOptions: { rootMargin: "1000px" },
+  });
+
+  const { loadingState, isLoading, items: posts } = listApi;
+
+  if (loadingState === "error")
+    return (
+      <div className="h-full flex justify-center items-center">
+        <p className="text-xl">Упс! Возникла ошибка!</p>
+      </div>
+    );
+
+  return (
+    <div className="w-full sm:py-4 mx-auto">
+      <div
+        className="relative w-full flex flex-col min-w-0 break-words
+        bg-white shadow-lg border border-gray-200 sm:rounded-xl"
+      >
+        <PostsToolbar disabled={isLoading} />
+
+        {loadingState === "loading" ? (
+          <Loader className="flex items-center justify-center py-6" />
+        ) : posts.length ? (
+          <div className="block w-full overflow-x-auto">
+            <table className="w-full divide-y divide-gray-200">
+              <caption className="px-6 py-3 text-start text-sm text-gray-600">
+                Таблица постов с полями id, заголовка, просмотров, публикации,
+                автора и тэгов
+              </caption>
+              <TableHead headers={Object.keys(posts[0])} />
+              <TableBody posts={posts} />
+            </table>
+          </div>
+        ) : (
+          <p className="text-lg">Нет результатов</p>
+        )}
+
+        {nextPage && (
+          <Loader
+            ref={inViewRef}
+            className="flex items-center justify-center py-6"
+          />
+        )}
+      </div>
+    </div>
+  );
+};
