@@ -1,4 +1,4 @@
-# Posts table react app
+# React posts table app
 
 - client: React + TypeScript + Vite
 - server: [json-server](https://github.com/typicode/json-server)
