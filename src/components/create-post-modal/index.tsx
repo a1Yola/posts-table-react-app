@@ -1,51 +1,54 @@
-import { useState } from "react";
 import {
-  Description,
+  CloseButton,
   Dialog,
+  DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import type { AsyncListData } from "react-stately";
 
-export const CreatePostModal = () => {
-  const [isOpen, setIsOpen] = useState(false);
+import { AddPostForm } from "../add-post-form";
 
-  const open = () => {
-    setIsOpen(true);
-  };
+import type { Post } from "@/shared";
 
-  const close = () => {
-    setIsOpen(false);
-  };
+interface CreatePostModalProps {
+  isOpen: boolean;
+  close: () => void;
+  listApi: AsyncListData<Post>;
+  nextPage: number | null;
+}
 
+export const CreatePostModal = ({
+  isOpen,
+  close,
+  listApi,
+  nextPage,
+}: CreatePostModalProps) => {
   return (
-    <>
-      <button className="hover:cursor-pointer" onClick={open}>
-        Open dialog
-      </button>
-      <Dialog open={isOpen} onClose={close} className="relative z-50">
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-lg space-y-4 border rounded-xl bg-black p-12">
-            <DialogTitle className="font-bold text-white">
-              Deactivate account
+    <Dialog
+      open={isOpen}
+      onClose={close}
+      className="relative z-50 focus:outline-none"
+    >
+      <DialogBackdrop className="fixed inset-0 bg-black/30" />
+      <div className="fixed inset-0 w-screen overflow-y-auto p-4">
+        <div className="flex min-h-full items-center justify-center">
+          <DialogPanel
+            transition
+            className="relative w-full max-w-md flex flex-col items-center justify-center
+            space-y-3 border border-gray-200 rounded-xl bg-white px-12 py-6
+            duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+          >
+            <CloseButton className="absolute top-2 right-2 hover:cursor-pointer">
+              ❌
+            </CloseButton>
+            <DialogTitle className="font-bold text-blue text-lg">
+              Добавление поста
             </DialogTitle>
-            <Description className="text-white">
-              This will permanently deactivate your account
-            </Description>
-            <p className="text-white">
-              Are you sure you want to deactivate your account? All of your data
-              will be permanently removed.
-            </p>
-            <div className="flex gap-4 text-white">
-              <button className="hover:cursor-pointer" onClick={close}>
-                Cancel
-              </button>
-              <button className="hover:cursor-pointer" onClick={close}>
-                Deactivate
-              </button>
-            </div>
+            <AddPostForm listApi={listApi} close={close} nextPage={nextPage} />
           </DialogPanel>
         </div>
-      </Dialog>
-    </>
+      </div>
+    </Dialog>
   );
 };

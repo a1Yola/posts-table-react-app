@@ -1,7 +1,8 @@
+import type { PostFormData } from "@/components/add-post-form/types";
 import type { Post } from "@/shared";
 
-/* loadPosts */
-export interface ResponseData {
+/* Load posts */
+export interface ResponseDataWithPagination {
   data: Post[];
   first: number;
   items: number;
@@ -12,6 +13,14 @@ export interface ResponseData {
 }
 
 export interface LoadPostsResponse {
-  data: ResponseData;
+  data: ResponseDataWithPagination;
   cursor?: string;
+}
+
+/* Add post */
+export interface AddPostRequest {
+  data: PostFormData;
+  onSuccess?: (newPost: Post) => void;
+  onError?: (error: unknown) => void;
+  onFinish?: () => void;
 }

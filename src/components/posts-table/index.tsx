@@ -26,10 +26,14 @@ export const PostsTable = () => {
         className="relative w-full flex flex-col min-w-0 break-words
         bg-white shadow-lg border border-gray-200 sm:rounded-xl"
       >
-        <PostsToolbar disabled={isLoading} />
+        <PostsToolbar
+          disabled={isLoading}
+          listApi={listApi}
+          nextPage={nextPage}
+        />
 
         {loadingState === "loading" ? (
-          <Loader className="flex items-center justify-center py-6" />
+          <Loader className="py-6" />
         ) : posts.length ? (
           <div className="block w-full overflow-x-auto">
             <table className="w-full divide-y divide-gray-200">
@@ -42,15 +46,12 @@ export const PostsTable = () => {
             </table>
           </div>
         ) : (
-          <p className="text-lg">Нет результатов</p>
+          <div className="flex justify-center py-4">
+            <p>Нет результатов</p>
+          </div>
         )}
 
-        {nextPage && (
-          <Loader
-            ref={inViewRef}
-            className="flex items-center justify-center py-6"
-          />
-        )}
+        {nextPage && <Loader ref={inViewRef} className="py-6" />}
       </div>
     </div>
   );

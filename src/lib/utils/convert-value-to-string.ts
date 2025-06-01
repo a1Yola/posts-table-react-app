@@ -1,4 +1,4 @@
-export const convertValueToString = (value) => {
+export const convertValueToString = (value: unknown) => {
   if (value === null || value === undefined) return "";
 
   switch (typeof value) {
