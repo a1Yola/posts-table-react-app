@@ -55,7 +55,7 @@ export const AddPostForm = ({ listApi, nextPage, close }: AddPostFormProps) => {
 
         <Button
           type="submit"
-          disabled={isSubmitting && listApi.isLoading}
+          disabled={isSubmitting || listApi.isLoading}
           className="w-full bg-blue text-white text-sm font-bold uppercase px-4 py-2 rounded
               outline-none hover:cursor-pointer hover:bg-blue-500 active:bg-blue-600 focus:outline-none
               ease-linear transition-all duration-150"
